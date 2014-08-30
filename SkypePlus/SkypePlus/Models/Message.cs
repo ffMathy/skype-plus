@@ -1,4 +1,6 @@
-﻿namespace SkypePlus.Models
+﻿using System.Net;
+
+namespace SkypePlus.Models
 {
     public class Message
     {
@@ -12,7 +14,7 @@
             Id = id;
             FromDisplayName = fromDisplayName;
             Timestamp = timestamp;
-            BodyXml = bodyXml;
+            BodyXml = WebUtility.HtmlDecode(bodyXml);
         }
     }
 }

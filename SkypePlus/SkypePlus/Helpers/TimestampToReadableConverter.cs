@@ -12,7 +12,7 @@ namespace SkypePlus.Helpers
 
             var timestamp = (int)value;
             var dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-            dateTime = dateTime.AddMilliseconds(timestamp).ToLocalTime();
+            dateTime = dateTime.AddSeconds(timestamp).ToLocalTime();
 
             return dateTime.ToString(dateTime < DateTime.Now.AddDays(-1) ? "g" : "t");
         }
