@@ -99,7 +99,7 @@ namespace SkypePlus
             await GetLatestMessages();
         }
 
-        private string FindSkypeDatabase()
+        private static string FindSkypeDatabase()
         {
             var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Skype";
 
@@ -112,16 +112,32 @@ namespace SkypePlus
                 return null;
             }
 
-            var userDirectory = directoryInfo.EnumerateDirectories().OrderBy(d => d.LastAccessTime).FirstOrDefault(d => d.EnumerateFiles().Any(f => f.Name == "main.db"));
+            Debug.WriteLine("Found dbs:\n" + directoryInfo.EnumerateDirectories()
+                .Select(d => d.EnumerateFiles().Where(f => f.Name == "main.db"))
+                .SelectMany(sublist => sublist.ToList())
+                .OrderByDescending(f => f.LastWriteTime)
+                .Select(f => f.FullName + "\n\t" + f.LastWriteTime)
+                .Aggregate((x, y) => x + "\n" + y));
 
-            if (userDirectory == null)
+            //var userDirectory = directoryInfo.EnumerateDirectories().Where(d => d.EnumerateFiles().Any(f => f.Name == "main.db")).OrderByDescending(d => d.LastWriteTime).FirstOrDefault();
+            var databaseFile = directoryInfo.EnumerateDirectories()
+                .Select(d => d.EnumerateFiles().Where(f => f.Name == "main.db"))
+                .SelectMany(sublist => sublist.ToList())
+                .OrderByDescending(f => f.LastWriteTime)
+                .FirstOrDefault();
+
+            if (databaseFile == null)
             {
                 MessageBox.Show("Could not find any main.db files in the Skype appdata folder.");
                 Application.Current.Shutdown();
                 return null;
             }
 
-            return userDirectory.FullName + @"\main.db";
+            var path = databaseFile.FullName;
+
+            Debug.WriteLine("Chosen database: " + path);
+
+            return path;
         }
     }
 }
