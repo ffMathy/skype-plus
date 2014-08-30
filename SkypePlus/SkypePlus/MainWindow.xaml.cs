@@ -19,7 +19,7 @@ namespace SkypePlus
         private readonly SQLiteConnection _connection;
         private int _lastMessageTimestamp;
 
-        private const string Database = @"C:\Users\Rene\AppData\Roaming\Skype\rene.sackers\main.db";
+        private readonly string _database;
 
         public MainWindow()
         {
@@ -27,7 +27,9 @@ namespace SkypePlus
 
             InitializeComponent();
 
-            _connection = new SQLiteConnection(String.Format( @"Data Source={0}", Database));
+            _database = FindSkypeDatabase();
+
+            _connection = new SQLiteConnection(String.Format( @"Data Source={0}", _database));
         }
 
         private async Task GetLatestMessages()
@@ -63,7 +65,7 @@ namespace SkypePlus
 
         private void WatchDatabase()
         {
-            var databaseFileInfo = new FileInfo(Database);
+            var databaseFileInfo = new FileInfo(_database);
             if (!databaseFileInfo.Exists || databaseFileInfo.DirectoryName == null) return;
 
             var watcher = new FileSystemWatcher(databaseFileInfo.DirectoryName, databaseFileInfo.Name)
@@ -81,9 +83,9 @@ namespace SkypePlus
 
         private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            if (!File.Exists(Database))
+            if (!File.Exists(_database))
             {
-                MessageBox.Show("Could not find database file \"" + Database + "\".");
+                MessageBox.Show("Could not find database file \"" + _database + "\".");
                 Application.Current.Shutdown();
                 return;
             }
@@ -95,6 +97,31 @@ namespace SkypePlus
         private async void ButtonRefreshClicked(object sender, RoutedEventArgs e)
         {
             await GetLatestMessages();
+        }
+
+        private string FindSkypeDatabase()
+        {
+            var appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Skype";
+
+            var directoryInfo = new DirectoryInfo(appDataPath);
+
+            if (!directoryInfo.Exists)
+            {
+                MessageBox.Show("No Skype folder found in path \"" + appDataPath + "\".");
+                Application.Current.Shutdown();
+                return null;
+            }
+
+            var userDirectory = directoryInfo.EnumerateDirectories().OrderBy(d => d.LastAccessTime).FirstOrDefault(d => d.EnumerateFiles().Any(f => f.Name == "main.db"));
+
+            if (userDirectory == null)
+            {
+                MessageBox.Show("Could not find any main.db files in the Skype appdata folder.");
+                Application.Current.Shutdown();
+                return null;
+            }
+
+            return userDirectory.FullName + @"\main.db";
         }
     }
 }
