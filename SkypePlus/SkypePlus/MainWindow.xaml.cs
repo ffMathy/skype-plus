@@ -29,7 +29,7 @@ namespace SkypePlus
 
             _database = FindSkypeDatabase();
 
-            _connection = new SQLiteConnection(String.Format( @"Data Source={0}", _database));
+            _connection = new SQLiteConnection(String.Format( @"Data Source={0};Read Only=True", _database));
         }
 
         private async Task GetLatestMessages()
@@ -38,7 +38,7 @@ namespace SkypePlus
             {
                 if (_connection.State != ConnectionState.Open) await _connection.OpenAsync();
                 var command = _connection.CreateCommand();
-                command.CommandText = "SELECT `id`, `from_dispname`, `timestamp`, `body_xml` FROM `Messages` WHERE `timestamp` > @timestamp ORDER BY `timestamp` DESC LIMIT 100;";
+                command.CommandText = "SELECT `id`, `from_dispname`, `timestamp`, `body_xml` FROM `Messages` WHERE `timestamp` > @timestamp ORDER BY `timestamp` DESC, `id` ASC LIMIT 100;";
                 command.Parameters.Add(new SQLiteParameter("@timestamp", _lastMessageTimestamp));
                 var reader = await command.ExecuteReaderAsync();
 
