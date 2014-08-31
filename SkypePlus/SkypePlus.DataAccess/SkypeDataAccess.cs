@@ -77,12 +77,16 @@ namespace SkypePlus.DataAccess
                 var newMessages = new List<Message>();
                 while (await reader.ReadAsync())
                 {
-                    var message = new Message(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetString(3));
+                    var timestamp = reader.GetInt32(2);
+                    var message = new Message(reader.GetInt32(0), reader.GetString(1), timestamp, reader.GetString(3));
                     newMessages.Add(message);
                     messages.Add(message);
-                }
 
-                _lastMessageTimestamp = newMessages.Max(m => m.Timestamp);
+                    if (timestamp > _lastMessageTimestamp)
+                    {
+                        timestamp = _lastMessageTimestamp;
+                    }
+                }
 
                 if (NewMessagesArrived != null)
                 {
