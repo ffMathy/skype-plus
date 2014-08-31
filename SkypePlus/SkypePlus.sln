@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.22013.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkypePlus", "SkypePlus\SkypePlus.csproj", "{C3BFA5A1-128C-4554-ABEC-23DF721C8C7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkypePlus.Models", "SkypePlus.Models\SkypePlus.Models.csproj", "{5B59FF74-A7FE-4181-865D-169FD4EEF651}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkypePlus.DataAccess", "SkypePlus.DataAccess\SkypePlus.DataAccess.csproj", "{4A5C661E-DCFD-4FD4-A530-53DD97D5FDE4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{C3BFA5A1-128C-4554-ABEC-23DF721C8C7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3BFA5A1-128C-4554-ABEC-23DF721C8C7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3BFA5A1-128C-4554-ABEC-23DF721C8C7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B59FF74-A7FE-4181-865D-169FD4EEF651}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B59FF74-A7FE-4181-865D-169FD4EEF651}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B59FF74-A7FE-4181-865D-169FD4EEF651}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B59FF74-A7FE-4181-865D-169FD4EEF651}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A5C661E-DCFD-4FD4-A530-53DD97D5FDE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A5C661E-DCFD-4FD4-A530-53DD97D5FDE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A5C661E-DCFD-4FD4-A530-53DD97D5FDE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A5C661E-DCFD-4FD4-A530-53DD97D5FDE4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
